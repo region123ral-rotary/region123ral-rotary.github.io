@@ -1,0 +1,54 @@
+# main ブランチに push すると自動で GitHub Pages に公開する
+# ※ お知らせ・イベント等のデータはスプレッドシートから直接読むので、データ更新ではこの処理は動かない（不要）
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: 公開URLを決める
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
+          DOMAIN="${{ vars.CUSTOM_DOMAIN }}"
+          if [ -n "$DOMAIN" ]; then
+            echo "SITE_URL=https://$DOMAIN" >> $GITHUB_ENV; echo "BASE_PATH=/" >> $GITHUB_ENV
+          elif [ "$REPO" = "${OWNER,,}.github.io" ]; then
+            echo "SITE_URL=https://$REPO" >> $GITHUB_ENV; echo "BASE_PATH=/" >> $GITHUB_ENV
+          else
+            echo "SITE_URL=https://${OWNER,,}.github.io" >> $GITHUB_ENV; echo "BASE_PATH=/$REPO/" >> $GITHUB_ENV
+          fi
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

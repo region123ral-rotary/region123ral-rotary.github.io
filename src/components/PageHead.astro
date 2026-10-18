@@ -1,0 +1,12 @@
+---
+// 下層ページの見出し帯
+interface Props { eyebrow: string; title: string; lead?: string; }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    {lead && <p>{lead}</p>}
+  </div>
+</section>

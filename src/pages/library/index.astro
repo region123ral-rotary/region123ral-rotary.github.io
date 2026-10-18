@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHead from '../../components/PageHead.astro';
+---
+<Layout title="資料ライブラリ">
+  <PageHead eyebrow="Library" title="資料ライブラリ" lead="研修やクラブ運営にそのまま使える資料をまとめています。クリックすると資料が開きます。" />
+  <section class="block">
+    <div class="wrap">
+      <input id="q" class="search" type="search" placeholder="キーワードで探す" />
+      <div id="filters" class="filters"></div>
+      <div id="list" class="doc-list" aria-busy="true"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { loadSheet, parseDate } from '../../lib/sheet.js';
+  import { libraryItem } from '../../lib/cards.js';
+
+  const list = document.getElementById('list')!;
+  const filters = document.getElementById('filters')!;
+  const q = document.getElementById('q') as HTMLInputElement;
+  let rows: Record<string, string>[] = [];
+  let cat = 'すべて';
+
+  function draw() {
+    const word = q.value.trim().toLowerCase();
+    const hit = rows.filter(
+      (r) => (cat === 'すべて' || r['カテゴリ'] === cat) &&
+        (!word || [r['タイトル'], r['説明'], r['カテゴリ']].join(' ').toLowerCase().includes(word)),
+    );
+    list.innerHTML = hit.map(libraryItem).join('') || '<p class="empty">該当する資料がありません。</p>';
+    filters.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === cat)));
+  }
+
+  loadSheet('library')
+    .then((r) => {
+      rows = r.sort((a, b) => (+(parseDate(b['公開日']) ?? 0)) - (+(parseDate(a['公開日']) ?? 0)));
+      const cats = ['すべて', ...new Set(rows.map((x) => x['カテゴリ']).filter(Boolean))];
+      filters.innerHTML = cats.map((c) => `<button type="button" data-cat="${c.replace(/"/g, '&quot;')}">${c.replace(/</g, '&lt;')}</button>`).join('');
+      filters.addEventListener('click', (e) => {
+        const b = (e.target as HTMLElement).closest('button');
+        if (b) { cat = b.dataset.cat!; draw(); }
+      });
+      q.addEventListener('input', draw);
+      draw();
+    })
+    .catch((e) => {
+      console.error(e);
+      list.innerHTML = '<p class="empty">データを読み込めませんでした。時間をおいて再度お試しください。</p>';
+    })
+    .finally(() => list.removeAttribute('aria-busy'));
+</script>

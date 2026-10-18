@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHead from '../../components/PageHead.astro';
+---
+<Layout title="イベント">
+  <PageHead eyebrow="Events" title="イベント" lead="RALS・RALF・ラーニングセミナーなど、委員会が開催するイベントの予定です。" />
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head"><h2>これからのイベント</h2></div>
+      <div id="up" class="event-list" aria-busy="true"></div>
+    </div>
+  </section>
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head"><h2>過去のイベント</h2></div>
+      <div id="past" class="event-list" aria-busy="true"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { loadSheet } from '../../lib/sheet.js';
+  import { splitEvents, eventItem } from '../../lib/cards.js';
+  const up = document.getElementById('up')!;
+  const past = document.getElementById('past')!;
+  loadSheet('events')
+    .then((rows) => {
+      const s = splitEvents(rows);
+      up.innerHTML = s.up.map((r) => eventItem(r)).join('') || '<p class="empty">現在予定されているイベントはありません。</p>';
+      past.innerHTML = s.past.map((r) => eventItem(r, true)).join('') || '<p class="empty">まだありません。</p>';
+    })
+    .catch((e) => {
+      console.error(e);
+      up.innerHTML = '<p class="empty">データを読み込めませんでした。時間をおいて再度お試しください。</p>';
+      past.innerHTML = '';
+    })
+    .finally(() => [up, past].forEach((el) => el.removeAttribute('aria-busy')));
+</script>

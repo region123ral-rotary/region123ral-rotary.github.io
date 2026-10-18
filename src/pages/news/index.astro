@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHead from '../../components/PageHead.astro';
+---
+<Layout title="お知らせ">
+  <PageHead eyebrow="News" title="お知らせ" />
+  <section class="block">
+    <div class="wrap">
+      <div id="list" class="news-list" aria-busy="true"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { render } from '../../lib/sheet.js';
+  import { sortNews, newsItem } from '../../lib/cards.js';
+  render(document.getElementById('list')!, 'news', (rows) => sortNews(rows).map(newsItem).join(''));
+</script>

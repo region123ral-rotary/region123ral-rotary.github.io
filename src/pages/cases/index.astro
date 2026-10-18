@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHead from '../../components/PageHead.astro';
+---
+<Layout title="全国の好事例">
+  <PageHead eyebrow="Good Practice" title="全国の好事例" lead="各地域会議で選ばれた、他地区・他クラブにも広げたい取り組みを紹介します。" />
+  <section class="block">
+    <div class="wrap">
+      <div id="list" class="case-list" aria-busy="true"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { render } from '../../lib/sheet.js';
+  import { caseItem } from '../../lib/cards.js';
+  render(document.getElementById('list')!, 'cases', (rows) => [...rows].reverse().map(caseItem).join(''));
+</script>
