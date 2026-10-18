@@ -42,7 +42,12 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
       <div class="contact">
         <h2>あなたのクラブの学びを、一緒に。</h2>
         <p>卓話のご依頼・資料のご提供・研修のご相談もお気軽にどうぞ。</p>
-        {LINKS.litlink && <a class="btn" href={LINKS.litlink} target="_blank" rel="noopener">最新情報・各種リンク</a>}
+        <p class="contact-to">{LINKS.contactName}<br /><a href={'mailto:' + LINKS.email}>{LINKS.email}</a></p>
+        <div class="contact-btns">
+          <a class="btn" href={'mailto:' + LINKS.email}>メールで問い合わせる</a>
+          {LINKS.instagram && <a class="btn ghost" href={LINKS.instagram} target="_blank" rel="noopener">Instagram</a>}
+          {LINKS.litlink && <a class="btn ghost" href={LINKS.litlink} target="_blank" rel="noopener">各種リンク</a>}
+        </div>
       </div>
     </div>
   </section>
@@ -76,6 +81,9 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
   .contact { background: var(--navy); border-top: 6px solid var(--magenta); color: var(--white); border-radius: 20px; padding: 48px 32px; text-align: center; }
   .contact h2 { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); }
-  .contact .btn { background: var(--gold); color: var(--navy); margin-top: 8px; }
-  .contact .btn:hover { background: var(--white); }
+  .contact-to { font-weight: 700; }
+  .contact-to a { color: var(--gold); word-break: break-all; }
+  .contact-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+  .contact .btn:first-child { background: var(--gold); color: var(--navy); }
+  .contact .btn:first-child:hover { background: var(--white); }
 </style>

@@ -49,6 +49,7 @@ const isActive = (href: string) => (href === '' ? path === base : path.startsWit
       <div>
         <img src={base + 'img/rotaract_logo_w.png'} alt="Rotaract Zone 1A, 2&3" class="footer-logo" />
         <p class="footer-name">{SITE_NAME}</p>
+        {LINKS.email && <p class="footer-contact">お問い合わせ：{LINKS.contactName}<br /><a href={'mailto:' + LINKS.email}>{LINKS.email}</a></p>}
       </div>
       <nav class="footer-nav">
         {NAV.map((n) => <a href={base + n.href}>{n.label}</a>)}

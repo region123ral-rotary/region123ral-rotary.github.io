@@ -34,6 +34,9 @@ function toObjects(rows) {
     .filter((o) => Object.values(o).some((v) => v) && !o['非公開']);
 }
 
+// タブ名が違うとGoogleは先頭のタブを返してしまうので、必須の見出しで中身を確かめる
+const REQUIRED = { news: 'タイトル', events: 'タイトル', library: 'URL', cases: 'タイトル', members: '氏名' };
+
 export async function loadSheet(key) {
   const name = SHEETS[key];
   const url = SHEET_ID
@@ -41,7 +44,12 @@ export async function loadSheet(key) {
     : `${BASE}data/${key}.csv`;
   const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`${name} の読み込みに失敗しました (${res.status})`);
-  return toObjects(parseCSV(await res.text()));
+  const rows = parseCSV(await res.text());
+  const need = REQUIRED[key];
+  if (need && !(rows[0] || []).some((h) => h.trim() === need)) {
+    throw new Error(`タブ「${name}」が見つからないか、見出し「${need}」がありません`);
+  }
+  return toObjects(rows);
 }
 
 // ===== 表示用ヘルパー =====

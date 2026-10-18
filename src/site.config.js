@@ -2,7 +2,7 @@
 
 // Googleスプレッドシートの ID（URLの /d/ と /edit の間の文字列）
 // 空のままだと public/data/ のサンプルCSVを表示する
-export const SHEET_ID = '';
+export const SHEET_ID = '1olBWjUcAI8amWkz05WY7pXN6LF6KjS-NpyJmxt_bhpk';
 
 // スプレッドシートのタブ名（シート名）
 export const SHEETS = {
@@ -31,6 +31,7 @@ export const NAV = [
 // 外部リンク（空欄の項目はフッターに出ない）
 export const LINKS = {
   litlink: 'https://lit.link/ralearning',
-  instagram: '',
-  email: '',
+  instagram: 'https://www.instagram.com/rac_zone1a.2.3_learning/',
+  email: 'region1.2.3ral@gmail.com',
+  contactName: '全国RAラーニング委員会 事務局',
 };
