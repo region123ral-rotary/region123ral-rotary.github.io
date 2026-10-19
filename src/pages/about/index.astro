@@ -72,12 +72,16 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   @media (max-width: 800px) { .intro { grid-template-columns: 1fr; } }
   @media (max-width: 480px) { .facts div { grid-template-columns: 1fr; gap: 2px; } }
 
-  .members { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-  .members :global(li) { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; }
+  .members { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .members :global(li) { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .members :global(.photo) { flex: 0 0 76px; width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: center 25%; background: var(--paper); }
+  .members :global(.noimg) { display: grid; place-items: center; background: var(--navy); color: var(--white); font-family: var(--serif); font-size: 26px; }
+  .members :global(.txt) { display: flex; flex-direction: column; min-width: 0; line-height: 1.5; }
   .members :global(.role) { font-size: 12px; color: var(--magenta); font-weight: 700; }
   .members :global(strong) { font-size: 18px; color: var(--navy); }
-  .members :global(.dist) { font-size: 13px; color: var(--ink-soft); }
-  .members :global(.desc) { font-size: 13px; color: var(--ink-soft); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+  .members :global(.kana) { font-size: 11px; color: var(--ink-soft); }
+  .members :global(.dist) { font-size: 13px; color: var(--ink); margin-top: 6px; }
+  .members :global(.desc) { font-size: 12px; color: var(--ink-soft); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
 
   .contact { background: var(--navy); border-top: 6px solid var(--magenta); color: var(--white); border-radius: 20px; padding: 48px 32px; text-align: center; }
   .contact h2 { font-family: var(--serif); font-size: clamp(22px, 4vw, 32px); }

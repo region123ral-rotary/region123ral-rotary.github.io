@@ -78,5 +78,19 @@ export function caseItem(r) {
 
 // ---- 委員 ----
 export function memberItem(r) {
-  return `<li><span class="role">${esc(r['役職'])}</span><strong>${esc(r['氏名'])}</strong><span class="dist">${esc(r['地区'])}</span>${r['担当'] ? `<span class="desc">${esc(r['担当'])}</span>` : ''}</li>`;
+  const photo = r['写真URL']
+    ? `<img class="photo" src="${esc(imageUrl(r['写真URL']).replace('=w1200', '=w400'))}" alt="" loading="lazy">`
+    : `<span class="photo noimg">${esc((r['氏名'] || '').trim().charAt(0))}</span>`;
+  const sub = [r['地区'], r['クラブ']].filter(Boolean).map(esc).join('<br>');
+  const note = [r['経歴'], r['担当']].filter(Boolean).map(esc).join('<br>');
+  return `<li>
+    ${photo}
+    <div class="txt">
+      <span class="role">${esc(r['役職'])}</span>
+      <strong>${esc(r['氏名'])}</strong>
+      ${r['ふりがな'] ? `<span class="kana">${esc(r['ふりがな'])}</span>` : ''}
+      ${sub ? `<span class="dist">${sub}</span>` : ''}
+      ${note ? `<span class="desc">${note}</span>` : ''}
+    </div>
+  </li>`;
 }
