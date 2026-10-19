@@ -72,7 +72,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   @media (max-width: 800px) { .intro { grid-template-columns: 1fr; } }
   @media (max-width: 480px) { .facts div { grid-template-columns: 1fr; gap: 2px; } }
 
-  .members { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .members { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 14px; }
   .members :global(li) { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; gap: 14px; align-items: flex-start; }
   .members :global(.photo) { flex: 0 0 76px; width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: center 25%; background: var(--paper); }
   .members :global(.noimg) { display: grid; place-items: center; background: var(--navy); color: var(--white); font-family: var(--serif); font-size: 26px; }
