@@ -82,8 +82,7 @@ export function memberItem(r) {
     ? `<img class="photo" src="${esc(imageUrl(r['写真URL']).replace('=w1200', '=w400'))}" alt="" loading="lazy">`
     : `<span class="photo noimg">${esc((r['氏名'] || '').trim().charAt(0))}</span>`;
   const sub = [r['地区'], r['クラブ']].filter(Boolean).map(esc).join('<br>');
-  const lines = (s = '') => s.split('
-').map((x) => x.trim()).filter(Boolean);
+  const lines = (s = '') => s.split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
   const roles = lines(r['現在の役職']);
   const hist = lines(r['経歴']);
   const now = roles.length ? `<ul class="now">${roles.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '';
