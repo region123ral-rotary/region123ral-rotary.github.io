@@ -81,6 +81,15 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   .members :global(strong) { font-size: 18px; color: var(--navy); }
   .members :global(.kana) { font-size: 11px; color: var(--ink-soft); }
   .members :global(.dist) { font-size: 13px; color: var(--ink); margin-top: 6px; }
+  .members :global(.now) { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  .members :global(.now li) { font-size: 11px; line-height: 1.4; background: var(--gold-tint); color: #7a5208; padding: 3px 8px; border-radius: 999px; }
+  .members :global(.hist) { margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 12px; color: var(--ink-soft); }
+  .members :global(.hist summary) { cursor: pointer; color: var(--magenta); font-weight: 700; list-style: none; }
+  .members :global(.hist summary::-webkit-details-marker) { display: none; }
+  .members :global(.hist summary::after) { content: ' ＋'; }
+  .members :global(.hist[open] summary::after) { content: ' －'; }
+  .members :global(.hist ul) { margin: 6px 0 0; padding-left: 1.1em; }
+  .members :global(.hist li) { margin-bottom: 2px; }
   .members :global(.desc) { font-size: 12px; color: var(--ink-soft); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
 
   .contact { background: var(--navy); border-top: 6px solid var(--magenta); color: var(--white); border-radius: 20px; padding: 48px 32px; text-align: center; }

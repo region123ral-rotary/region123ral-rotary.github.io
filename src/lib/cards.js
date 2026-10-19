@@ -82,15 +82,23 @@ export function memberItem(r) {
     ? `<img class="photo" src="${esc(imageUrl(r['写真URL']).replace('=w1200', '=w400'))}" alt="" loading="lazy">`
     : `<span class="photo noimg">${esc((r['氏名'] || '').trim().charAt(0))}</span>`;
   const sub = [r['地区'], r['クラブ']].filter(Boolean).map(esc).join('<br>');
-  const note = [r['経歴'], r['担当']].filter(Boolean).map(esc).join('<br>');
+  const lines = (s = '') => s.split('
+').map((x) => x.trim()).filter(Boolean);
+  const roles = lines(r['現在の役職']);
+  const hist = lines(r['経歴']);
+  const now = roles.length ? `<ul class="now">${roles.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '';
+  const note = hist.length
+    ? `<details class="hist"><summary>経歴</summary><ul>${hist.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></details>`
+    : r['担当'] ? `<span class="desc">${esc(r['担当'])}</span>` : '';
   return `<li>
     ${photo}
     <div class="txt">
       <span class="role">${esc(r['役職'])}</span>
       <strong>${esc(r['氏名'])}</strong>
       ${r['ふりがな'] ? `<span class="kana">${esc(r['ふりがな'])}</span>` : ''}
+      ${now}
       ${sub ? `<span class="dist">${sub}</span>` : ''}
-      ${note ? `<span class="desc">${note}</span>` : ''}
+      ${note}
     </div>
   </li>`;
 }
