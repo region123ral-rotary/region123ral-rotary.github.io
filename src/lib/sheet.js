@@ -35,7 +35,7 @@ function toObjects(rows) {
 }
 
 // タブ名が違うとGoogleは先頭のタブを返してしまうので、必須の見出しで中身を確かめる
-const REQUIRED = { news: 'タイトル', events: 'タイトル', library: 'URL', cases: 'タイトル', members: '氏名' };
+const REQUIRED = { news: 'タイトル', events: 'タイトル', library: 'URL', cases: 'タイトル', members: '氏名', instagram: '投稿URL' };
 
 export async function loadSheet(key) {
   const name = SHEETS[key];

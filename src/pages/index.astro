@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Activities from '../components/Activities.astro';
+import { LINKS } from '../site.config.js';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 <Layout>
@@ -42,6 +43,16 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   <section class="block">
     <div class="wrap">
       <div class="block-head">
+        <div><p class="eyebrow">Instagram</p><h2>Instagram</h2></div>
+        {LINKS.instagram && <a class="btn-text" href={LINKS.instagram} target="_blank" rel="noopener">フォローする →</a>}
+      </div>
+      <div id="insta" class="insta-list" aria-busy="true"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="block-head">
         <div><p class="eyebrow">What we do</p><h2>7つの活動</h2></div>
       </div>
       <Activities />
@@ -66,12 +77,24 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 <script>
   import { render } from '../lib/sheet.js';
-  import { sortNews, newsItem, splitEvents, eventItem } from '../lib/cards.js';
+  import { sortNews, newsItem, splitEvents, eventItem, instaItem } from '../lib/cards.js';
 
   render(document.getElementById('news')!, 'news', (rows) => sortNews(rows).slice(0, 4).map(newsItem).join(''));
   render(document.getElementById('events')!, 'events', (rows) => {
     const { up } = splitEvents(rows);
     return up.length ? up.slice(0, 3).map((r) => eventItem(r)).join('') : '<p class="empty">現在予定されているイベントはありません。</p>';
+  });
+
+  // Instagram：シート「インスタ」の上から3件を公式の埋め込みで表示
+  const insta = document.getElementById('insta')!;
+  render(insta, 'instagram', (rows) => rows.map(instaItem).filter(Boolean).slice(0, 3).join('')).then(() => {
+    if (!insta.querySelector('.instagram-media')) return;
+    const w = window as any;
+    if (w.instgrm) return w.instgrm.Embeds.process();
+    const sc = document.createElement('script');
+    sc.src = 'https://www.instagram.com/embed.js';
+    sc.async = true;
+    document.body.appendChild(sc);
   });
 </script>
 
@@ -88,6 +111,13 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   .hero-img { border-radius: 18px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); aspect-ratio: 1600 / 932; object-fit: cover; }
   @media (max-width: 800px) {
     .hero-inner { grid-template-columns: 1fr; gap: 24px; padding: 32px 0; }
+  }
+
+  .insta-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .insta-list :global(.instagram-media) { min-width: 0 !important; width: 100% !important; margin: 0 !important; }
+  @media (max-width: 900px) {
+    .insta-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 326px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .insta-list > :global(*) { scroll-snap-align: start; }
   }
 
   .shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }

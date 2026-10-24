@@ -11,6 +11,7 @@ export const SHEETS = {
   library: '資料',
   cases: '好事例',
   members: '委員',
+  instagram: 'インスタ',
 };
 
 export const SITE_NAME = '全国ローターアクトラーニング委員会';

@@ -101,3 +101,12 @@ export function memberItem(r) {
     </div>
   </li>`;
 }
+
+// ---- Instagram ----
+// 投稿URL（/p/〜 /reel/〜）を公式の埋め込み用タグにする。URLが違えば空
+export function instaItem(r) {
+  const m = (r['投稿URL'] || '').match(/instagram\.com\/(?:[\w.]+\/)?(p|reel|tv)\/([\w-]+)/);
+  if (!m) return '';
+  const url = `https://www.instagram.com/${m[1]}/${m[2]}/`;
+  return `<blockquote class="instagram-media" data-instgrm-permalink="${url}?utm_source=ig_embed" data-instgrm-version="14"><a href="${url}" target="_blank" rel="noopener">Instagramで見る</a></blockquote>`;
+}
