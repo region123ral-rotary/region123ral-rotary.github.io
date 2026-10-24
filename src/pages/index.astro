@@ -94,6 +94,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     const sc = document.createElement('script');
     sc.src = 'https://www.instagram.com/embed.js';
     sc.async = true;
+    // 読み込み完了後に明示的に変換（自動変換が走らないことがあるため）
+    sc.onload = () => w.instgrm?.Embeds.process();
     document.body.appendChild(sc);
   });
 </script>
@@ -115,6 +117,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
   .insta-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
   .insta-list :global(.instagram-media) { min-width: 0 !important; width: 100% !important; margin: 0 !important; }
+  .insta-list :global(blockquote.instagram-media) { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 48px 16px; text-align: center; }
   @media (max-width: 900px) {
     .insta-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 326px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
     .insta-list > :global(*) { scroll-snap-align: start; }
